@@ -30,6 +30,9 @@ function linkConfigurationFiles {
 
     echo "Configuring vim..."
     if [ ! -L "$VAGRANT_HOME/.vimrc" ]; then
+        mkdir -p "$VAGRANT_HOME/.vim/backups"
+        mkdir -p "$VAGRANT_HOME/.vim/swaps"
+        mkdir -p "$VAGRANT_HOME/.vim/undo"
         ln -s "$VAGRANT_HOME/git/dotfiles/vim/vimrc_server" "$VAGRANT_HOME/.vimrc"
     fi
 
