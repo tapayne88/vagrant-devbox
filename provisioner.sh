@@ -46,7 +46,7 @@ function linkConfigurationFiles {
 
 sudo apt-get update
 
-sudo apt-get -y install build-essential git vim
+sudo apt-get -y install build-essential git vim htop
 installZsh
 linkConfigurationFiles
 
