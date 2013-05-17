@@ -49,15 +49,7 @@ sudo apt-get update
 sudo apt-get -y install build-essential git vim htop
 installZsh
 linkConfigurationFiles
-
-sudo apt-mark hold grub-pc
 sudo apt-get -y dist-upgrade
-sudo apt-mark unhold grub-pc
 
 echo ""
-echo "Now, we need to upgrade grub-pc but it will require some interaction from you!"
-echo "Follow the steps below:"
-echo "   - \`vagrant ssh\`"
-echo "   - \`sudo apt-get upgrade\`"
-echo "   - close ssh connection"
-echo "   - \`vagrant reload\` on local machine"
+echo "Now run \`vagrant ssh\`"
