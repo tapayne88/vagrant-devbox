@@ -1,0 +1,2 @@
+Node.js - https://github.com/joyent/node
+MongoDB - https://github.com/mongodb/mongo

@@ -39,6 +39,7 @@ function configureDirectories {
     if [ ! -d "$VAGRANT_HOME/git" ]; then
         mkdir "$VAGRANT_HOME/git"
         setOwnerVagrant "$VAGRANT_HOME/git"
+        setupSymLink "/vagrant/repos.txt" "$VAGRANT_HOME/git/repos.txt"
     fi
 }
 
