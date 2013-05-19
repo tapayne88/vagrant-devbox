@@ -11,21 +11,21 @@ function configureZsh {
     fi
 
     if [ ! -L "$VAGRANT_HOME/.zshrc" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/zsh/zshrc_server" "$VAGRANT_HOME/.zshrc"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/zsh/zshrc_server" "$VAGRANT_HOME/.zshrc"
     fi
 
     if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/themes/tpayne-vm-simple.zsh-theme" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
     fi
     if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/plugins/tpayne-vi-mode" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/"
     fi
 }
 
 function configureSymlinks {
     echo "Configuring git..."
     if [ ! -L "$VAGRANT_HOME/.gitconfig" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/gitconfig" "$VAGRANT_HOME/.gitconfig"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/gitconfig" "$VAGRANT_HOME/.gitconfig"
     fi
 
     echo "Configuring vim..."
@@ -33,15 +33,20 @@ function configureSymlinks {
         mkdir -p "$VAGRANT_HOME/.vim/backups"
         mkdir -p "$VAGRANT_HOME/.vim/swaps"
         mkdir -p "$VAGRANT_HOME/.vim/undo"
-        ln -s "$VAGRANT_HOME/git/dotfiles/vim/vimrc_server" "$VAGRANT_HOME/.vimrc"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/vim/vimrc_server" "$VAGRANT_HOME/.vimrc"
     fi
 
     if [ ! -L "$VAGRANT_HOME/.editrc" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/editrc" "$VAGRANT_HOME/.editrc"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/editrc" "$VAGRANT_HOME/.editrc"
     fi
     if [ ! -L "$VAGRANT_HOME/.inputrc" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/inputrc" "$VAGRANT_HOME/.inputrc"
+        ln -s "$VAGRANT_HOME/host_git/dotfiles/inputrc" "$VAGRANT_HOME/.inputrc"
     fi
+}
+
+function configureDirectories {
+    mkdir "$VAGRANT_HOME/git"
+    sudo chown vagrant:vagrant "$VAGRANT_HOME/git"
 }
 
 function installPython {
@@ -57,6 +62,7 @@ sudo apt-get -y install build-essential git vim htop zsh curl
 sudo apt-get -y dist-upgrade
 configureZsh
 configureSymlinks
+configureDirectories
 
 # Install python
 installPython
