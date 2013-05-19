@@ -23,8 +23,8 @@ function configureZsh {
     fi
 
     setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/zshrc_server" "$VAGRANT_HOME/.zshrc"
-    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
-    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/tpayne-vm-simple.zsh-theme"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/tpayne-vi-mode"
 }
 
 function configureSymlinks {
@@ -51,7 +51,7 @@ function installPython {
 
 sudo apt-get update
 
-sudo apt-get -y install build-essential git vim htop zsh curl
+sudo apt-get -y install build-essential git vim htop zsh curl scons
 sudo apt-get -y dist-upgrade
 configureZsh
 configureSymlinks
