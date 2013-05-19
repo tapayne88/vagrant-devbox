@@ -2,27 +2,27 @@
 
 VAGRANT_HOME=/home/vagrant
 
-function installZsh {
-    echo "Installing Zsh..."
-    sudo apt-get -y install zsh
+function configureZsh {
     chsh -s /bin/zsh vagrant
 
     echo "Installing Oh-My-Zsh..."
-    sudo apt-get -y install curl
     if [ ! -d "$VAGRANT_HOME/.oh-my-zsh" ]; then
         git clone https://github.com/robbyrussell/oh-my-zsh.git "$VAGRANT_HOME/.oh-my-zsh"
     fi
-}
 
-function linkConfigurationFiles {
-    echo "Configuring Zsh..."
     if [ ! -L "$VAGRANT_HOME/.zshrc" ]; then
         ln -s "$VAGRANT_HOME/git/dotfiles/zsh/zshrc_server" "$VAGRANT_HOME/.zshrc"
     fi
-    if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/themes/tpayne-simple.zsh-theme" ]; then
-        ln -s "$VAGRANT_HOME/git/dotfiles/zsh/themes/tpayne-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
-    fi
 
+    if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/themes/tpayne-vm-simple.zsh-theme" ]; then
+        ln -s "$VAGRANT_HOME/git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
+    fi
+    if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/plugins/tpayne-vi-mode" ]; then
+        ln -s "$VAGRANT_HOME/git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/"
+    fi
+}
+
+function configureSymlinks {
     echo "Configuring git..."
     if [ ! -L "$VAGRANT_HOME/.gitconfig" ]; then
         ln -s "$VAGRANT_HOME/git/dotfiles/gitconfig" "$VAGRANT_HOME/.gitconfig"
@@ -44,12 +44,22 @@ function linkConfigurationFiles {
     fi
 }
 
+function installPython {
+    PYTHON_VERSION=`python -V 2>&1`
+    if [ "$PYTHON_VERSION" != "Python 2.7.5" ]; then
+        . "/vagrant/pythoninstaller.sh"
+    fi
+}
+
 sudo apt-get update
 
-sudo apt-get -y install build-essential git vim htop
-installZsh
-linkConfigurationFiles
+sudo apt-get -y install build-essential git vim htop zsh curl
 sudo apt-get -y dist-upgrade
+configureZsh
+configureSymlinks
+
+# Install python
+installPython
 
 echo ""
 echo "Now run \`vagrant ssh\`"
