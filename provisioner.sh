@@ -2,51 +2,44 @@
 
 VAGRANT_HOME=/home/vagrant
 
+function setOwnerVagrant {
+    sudo chown -h vagrant:vagrant $1
+}
+
+function setupSymLink {
+    if [ ! -L $2 ]; then
+        ln -s $1 $2
+        setOwnerVagrant $2
+    fi
+}
+
 function configureZsh {
+    echo "Configuring Zsh..."
     chsh -s /bin/zsh vagrant
 
-    echo "Installing Oh-My-Zsh..."
     if [ ! -d "$VAGRANT_HOME/.oh-my-zsh" ]; then
         git clone https://github.com/robbyrussell/oh-my-zsh.git "$VAGRANT_HOME/.oh-my-zsh"
+        setOwnerVagrant "$VAGRANT_HOME/.oh-my-zsh"
     fi
 
-    if [ ! -L "$VAGRANT_HOME/.zshrc" ]; then
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/zsh/zshrc_server" "$VAGRANT_HOME/.zshrc"
-    fi
-
-    if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/themes/tpayne-vm-simple.zsh-theme" ]; then
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
-    fi
-    if [ ! -L "$VAGRANT_HOME/.oh-my-zsh/plugins/tpayne-vi-mode" ]; then
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/"
-    fi
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/zshrc_server" "$VAGRANT_HOME/.zshrc"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/themes/tpayne-vm-simple.zsh-theme" "$VAGRANT_HOME/.oh-my-zsh/themes/"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/zsh/plugins/tpayne-vi-mode" "$VAGRANT_HOME/.oh-my-zsh/plugins/"
 }
 
 function configureSymlinks {
-    echo "Configuring git..."
-    if [ ! -L "$VAGRANT_HOME/.gitconfig" ]; then
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/gitconfig" "$VAGRANT_HOME/.gitconfig"
-    fi
-
-    echo "Configuring vim..."
-    if [ ! -L "$VAGRANT_HOME/.vimrc" ]; then
-        mkdir -p "$VAGRANT_HOME/.vim/backups"
-        mkdir -p "$VAGRANT_HOME/.vim/swaps"
-        mkdir -p "$VAGRANT_HOME/.vim/undo"
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/vim/vimrc_server" "$VAGRANT_HOME/.vimrc"
-    fi
-
-    if [ ! -L "$VAGRANT_HOME/.editrc" ]; then
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/editrc" "$VAGRANT_HOME/.editrc"
-    fi
-    if [ ! -L "$VAGRANT_HOME/.inputrc" ]; then
-        ln -s "$VAGRANT_HOME/host_git/dotfiles/inputrc" "$VAGRANT_HOME/.inputrc"
-    fi
+    echo "Configuring symlinks..."
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/gitconfig" "$VAGRANT_HOME/.gitconfig"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/vim/vimrc_server" "$VAGRANT_HOME/.vimrc"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/editrc" "$VAGRANT_HOME/.editrc"
+    setupSymLink "$VAGRANT_HOME/host_git/dotfiles/inputrc" "$VAGRANT_HOME/.inputrc"
 }
 
 function configureDirectories {
-    mkdir "$VAGRANT_HOME/git"
-    sudo chown vagrant:vagrant "$VAGRANT_HOME/git"
+    if [ ! -d "$VAGRANT_HOME/git" ]; then
+        mkdir "$VAGRANT_HOME/git"
+        setOwnerVagrant "$VAGRANT_HOME/git"
+    fi
 }
 
 function installPython {
