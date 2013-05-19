@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Running Python 2.7.5 installer"
+echo "Running Python 2.7.5 installer..."
 
 VAGRANT_HOME=/home/vagrant
 
@@ -9,7 +9,7 @@ sudo apt-get -y install libsqlite3-dev zlib1g-dev libncurses5-dev libgdbm-dev li
 
 cd $VAGRANT_HOME
 
-curl -kLO http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz
+curl -skLO http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tgz
 tar -xzf Python-2.7.5.tgz
 cd Python-2.7.5
 
